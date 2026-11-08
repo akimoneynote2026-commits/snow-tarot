@@ -191,12 +191,18 @@
   
   button.action-btn { background-color: #8caec6; color: white; border: none; padding: 12px 30px; font-size: 15px; font-weight: bold; border-radius: 30px; cursor: pointer; display: none; margin-top: 15px; box-shadow: 0 4px 10px rgba(140, 174, 198, 0.3); transition: transform 0.2s; }
   button.action-btn:hover { transform: translateY(-2px); background-color: #7ba2bf; }
+  .lang-toggle { margin: 0 auto 10px auto; }
+  .lang-btn { background: none; border: 1px solid #ba7a72; color: #ba7a72; padding: 3px 12px; font-size: 12px; font-weight: bold; cursor: pointer; }
+  .lang-btn:first-child { border-radius: 14px 0 0 14px; }
+  .lang-btn:last-child { border-radius: 0 14px 14px 0; border-left: none; }
+  .lang-btn.active { background-color: #ba7a72; color: #fff; }
 </style>
 </head>
 <body>
 
-<h1>❄️ 雪の妖精タロット 🕊️</h1>
-<div class="subtitle">~ 100%全肯定の毎日 ~</div>
+<div class="lang-toggle"><button class="lang-btn active" id="langJa" onclick="setLang('ja')">日本語</button><button class="lang-btn" id="langEn" onclick="setLang('en')">English</button></div>
+<h1 id="ttl">❄️ 雪の妖精タロット 🕊️</h1>
+<div class="subtitle" id="sub">~ 100%全肯定の毎日 ~</div>
 
 <div class="mode-selector">
   <button class="mode-btn active" id="btnModeOne" onclick="switchMode('one')">今日の1枚引き</button>
@@ -217,7 +223,7 @@
 <div class="three-cards-area" id="threeCardsArea">
   <!-- 過去 -->
   <div class="card-wrapper">
-    <div class="card-label">過去</div>
+    <div class="card-label" id="lbl0">過去</div>
     <div class="card-container" onclick="flipThreeCard(0)">
       <div class="card" id="threeCard0">
         <div class="card-face card-front"></div>
@@ -227,7 +233,7 @@
   </div>
   <!-- 現在 -->
   <div class="card-wrapper">
-    <div class="card-label">現在</div>
+    <div class="card-label" id="lbl1">現在</div>
     <div class="card-container" onclick="flipThreeCard(1)">
       <div class="card" id="threeCard1">
         <div class="card-face card-front"></div>
@@ -237,7 +243,7 @@
   </div>
   <!-- 未来 -->
   <div class="card-wrapper">
-    <div class="card-label">未来</div>
+    <div class="card-label" id="lbl2">未来</div>
     <div class="card-container" onclick="flipThreeCard(2)">
       <div class="card" id="threeCard2">
         <div class="card-face card-front"></div>
@@ -254,9 +260,9 @@
 <button class="action-btn" id="resetBtn" onclick="resetAll()">もう一度占う</button>
 
 <div class="pdf-cta-mini" id="pdfCtaMini">
-  <div class="pdf-cta-mini-title">このカードを、もう少し深く知りたい方へ</div>
-  <a class="pdf-cta-mini-link" href="https://yukino-seirei.booth.pm/items/8637451" target="_blank" rel="noopener noreferrer">📖 有料PDFガイドを見る</a>
-  <div class="pdf-cta-mini-note">BOOTHの商品ページが開きます</div>
+  <div class="pdf-cta-mini-title" id="ctaTitle">このカードを、もう少し深く知りたい方へ</div>
+  <a class="pdf-cta-mini-link" id="ctaLink" href="https://yukino-seirei.booth.pm/items/8637451" target="_blank" rel="noopener noreferrer">📖 有料PDFガイドを見る</a>
+  <div class="pdf-cta-mini-note" id="ctaNote">BOOTHの商品ページが開きます</div>
 </div>
 
 <script>
@@ -839,6 +845,587 @@
     }
   ];
 
+  // ==========================================
+  // 【English data】 same order and structure as cards[]
+  // ==========================================
+  const cardsEn = [
+{ title: "0. The Fool", messages: [
+[
+"A big chance to take a brand-new step, chirp! It's totally okay if you're not ready. I'll become the wind and give you a little push, so head lightly toward whatever excites you!",
+"Not knowing what will happen is so much fun! Pick the path that makes your heart feel light as a feather. I'm always watching over you from the sky, so spread your wings without worry, chirp!",
+"You don't need perfect preparation, chirp! Today, just hop onto whatever sounds fun and you'll score full marks. Don't worry, any mistake will melt away like snow!"
+],
+[
+"You've gathered so much courage to say \"let's just try it!\" again and again. That innocent step became a seed of wonderful happiness for who you are now. You're amazing, chirp!",
+"You trusted your own excitement more than what others might think. That honest, free heart has rescued you from so many tight spots. You really chose well, chirp!",
+"You jumped into new places without fearing failure, and you're so cool for it, chirp! The courage to start with nothing gave you the great freedom you have now!"
+],
+[
+"You're a free bird right now, chirp! You don't have to be tied down by boring rules. Put your own \"this looks fun!\" first, and trust the thrilled voice murmuring in your heart.",
+"Let your strict plans rest today and drift wherever the wind blows, chirp! Great happiness is hiding in a cafe you stumble on or a sudden whim!",
+"Free from \"I should,\" stretch your wings wide, chirp. Right now everything you do is welcomed, and your free, soft smile is warming everyone around you."
+],
+[
+"A new, exciting story is about to begin, chirp! Enjoy the thrill of not knowing what's next, together with us! Your future is blank and free, and it all depends on you!",
+"A new starting line is about to come into view! Reset every past mistake and start out light. The snow fairies will bless your new journey with sparkling dust, chirp!",
+"An amusing world you haven't seen is waiting for you! Don't overthink it. Just say \"here goes!\" and jump in. Surprisingly warm people and fun events will welcome you, chirp!"
+]
+]},
+{ title: "I. The Magician", messages: [
+[
+"Today the magic sleeping inside you sparkles awake, chirp! Everything you need is already in your hands. Be confident and make your own wonderful start!",
+"Today you overflow with the amazing talent to turn whatever you imagine into reality, chirp! Start something new, as if you were creating the thing you've always wanted!",
+"I'll blow away that \"can I really do it?\" worry with a cold wind, chirp. You're a wonderful creator! Start something new like you're waving a magic wand!"
+],
+[
+"You wanted to begin something, so you worked hard on all kinds of preparation and ideas. That earnest effort has truly become your strength now, chirp!",
+"You weren't afraid to start from zero. You opened new paths with your own head and hands, and your skill and passion have turned so many things into reality. Amazing, chirp!",
+"You kept warming up ideas and polishing your own \"weapons.\" That studious attitude and brave spirit are the best foundation you have now, chirp!"
+],
+[
+"Your ideas and personality are shining, chirp! Give shape right now to that \"I want to try this!\" hunch. When you move, the people around you start moving like magic!",
+"Right now you're full of confidence and in perfect condition to start something new, chirp. Use every tool and chance in front of you to color the world however you like!",
+"Your words and flashes of inspiration are giving everyone surprise and excitement, chirp. Believe you have limitless talent. It's time to take a step forward!"
+],
+[
+"A wonderful stage where you are the star is waiting, chirp! Everything will go smoothly, so don't worry. Look forward to the new days your future self will create!",
+"Your hidden talent blossoms all at once and pulls in a great opportunity, chirp. You'll reach your goals brilliantly, in a way no one else thought of!",
+"New projects and the things you want to do get on track with surprising smoothness! The snow fairies will sprinkle magic spice and fully help your success, chirp!"
+]
+]},
+{ title: "II. The High Priestess", messages: [
+[
+"Your intuition is always a perfect score, chirp! Step away from the outside noise today and listen to the quiet voice in your heart. A gentle answer will surely reach you.",
+"Rather than thinking everything through, treasure that feeling of \"somehow this seems right,\" chirp. Like clear snow, your pure intuition will show you the best answer.",
+"When other people's opinions get loud, flap your ears shut and ask your heart, chirp. You know better than anyone what makes you happy, so trust your own wisdom."
+],
+[
+"You read the room, held your feelings back, and watched over everything quietly and wisely. I want to give your kindness and care a heartfelt round of applause, chirp!",
+"You didn't get swept up in emotions. You stepped back and calmly kept your eyes on the right direction. The beauty of your steady heart has calmed so many rough waves, chirp.",
+"You carefully protected your knowledge and rich sensibility by reading and studying. I know about your quiet, intellectual efforts where no one could see, chirp!"
+],
+[
+"It's a time to quietly settle your heart, chirp. You don't need to rush. If you trust that feeling deep inside saying \"this is good,\" you'll never go wrong.",
+"Your dignified, beautiful presence is washing the hearts of the people around you. Enjoy some time that belongs only to you, maybe with your favorite tea, chirp.",
+"You don't have to force an answer. Your intuition is already ready, so just wait calmly for your heart to whisper \"now.\" You're right."
+],
+[
+"Your mind clears and the heart of things comes into view, chirp. Deep reassurance and steady wisdom will wrap around you and lead you into gentle, peaceful days.",
+"The important answer or truth you've been seeking will quietly appear in front of you, chirp. Doubt fades, and a lovely, clear sense of relief arrives.",
+"Your secret plans and ideas move forward in beautiful harmony, chirp. Quiet success and a deeply satisfying happiness are promised, so rest easy."
+]
+]},
+{ title: "III. The Empress", messages: [
+[
+"Take a break from trying hard today and snuggle into a warm best seat, chirp! It's a day to be loved, to be filled, to eat lots of tasty food, and to spoil yourself.",
+"You're wonderful when you try hard, but today you have the privilege of being pampered to the fullest, chirp! If there's something you want, sweetly ask everyone. It will all come true!",
+"Love and abundance are floating softly all around you, chirp. Soak slowly in a bath or wrap yourself in a fluffy futon and enjoy the best luxury!"
+],
+[
+"You shared so much love and warm kindness with the people around you and made everyone happy. Thank you for always thinking of others, chirp!",
+"You handed out warm smiles and happiness and gently grew a fruitful environment. Just having you there made everyone feel as safe as being in a mother's arms, chirp!",
+"You've enjoyed your work and daily life with deep affection and rich sensibility. That abundant lifestyle and kind heart are calling a fulfilled happiness into your life now!"
+],
+[
+"Blessings and love are overflowing around you right now, chirp. You don't need to hold anything back! Honestly accept all of it, with \"I'm glad\" and \"I'm happy.\"",
+"Your kindness and charm are drawing people in like a magnet, chirp. Today, eat something delicious and do lots of things that make your senses say \"yum! so nice!\"",
+"The time has come for your efforts to bear warm fruit and wrap you in gentle abundance, chirp. It's a reward for all your hard work, so enjoy it with 100% smiles and no holding back!"
+],
+[
+"A season is coming when your heart and your abundance both ripen plump, chirp! What you wanted comes naturally, warm encounters appear, and you'll harvest lots of happy fruit!",
+"I see a future with you at the center, filled with smiles and warm love, chirp. You're heading toward cozy, delicious days with nothing lacking, so look forward to it with peace of mind!",
+"Your life and your precious relationships will grow richer and fuller of happiness. The snow fairies will shower flower petals to celebrate your bountiful future, chirp!"
+]
+]},
+{ title: "IV. The Emperor", messages: [
+[
+"Your unshakable will makes today the best day, chirp! Once you decide \"this is it,\" you can stand firm and go ahead. I'll ride on your head and guide the way, chirp!",
+"Hold your chest high with confidence, chirp! Today you're full of the cool energy that makes everyone want to rely on you. Trust your own rules and act boldly!",
+"You have the strong power to gently wrap up any difficulty with \"it's okay, it's okay\" and solve it, chirp. I've got your back, so show your own kind of leadership!"
+],
+[
+"With a strong sense of responsibility, you led everyone and sharply finished what you had to do. You're so reliable, so cool, and I'm so proud of you, chirp!",
+"Even when you met hardships, you didn't run. You firmly protected those around you and your own footing. All the snow fairies are charmed by your dependable action and responsibility!",
+"You made plans to reach your goals and patiently, steadily turned them into reality, step by step. That effort and steady core have built the great trust you have now, chirp!"
+],
+[
+"Right now you're a strong and dependable leader, chirp! Trust from the people around you is outstanding. Be confident in your decisions and stand firm. I guarantee it!",
+"You're not tossed around by emotions and are controlling things realistically, chirp. Just by standing firm, you make everyone feel \"I'm safe with this person!\"",
+"Right now you're a reliable emperor governing your own world properly, chirp. You're filled with the strength to advance without hesitation toward the goals you set!"
+],
+[
+"What you worked so hard to build clicks into a stable form, chirp. Your goals are firmly reached, and a future wrapped in big relief and accomplishment is just ahead!",
+"Your position as a leader and the projects you've worked on achieve wonderful success, chirp. Everyone recognizes your ability, and you win a reliable place and glory!",
+"Your foundation hardens firmly and a life of unshakable safety arrives, chirp. With solid backing, financial and social, you can happily rule your empire at your own leisurely pace!"
+]
+]},
+{ title: "V. The Hierophant", messages: [
+[
+"A warm day when bonds of kindness and trust spread, chirp. When you're in trouble, don't carry it alone. It's okay to tell someone you trust \"help me.\" Everyone will gladly lend a hand, chirp!",
+"Today your experience and knowledge become a warm guidepost that saves someone, chirp. Let's spread warm bonds by giving and receiving advice with kind hearts!",
+"The spirit of \"we help each other\" wraps you in great peace today, chirp. If you value manners and rules a little, things will fall into place surprisingly smoothly!"
+],
+[
+"You walked on while following the rules, listening to people's troubles, and valuing harmony. The kindness you protected has saved so many people around you, chirp. Thank you!",
+"You've been sincere to everyone and built trust by cherishing manners and promises. That sincerity has created a wonderful circle of reassurance around you, chirp!",
+"You quietly lent your wisdom to people in trouble and guided them with warm words. Everyone always sincerely thanks you for your thoughtful kindness!"
+],
+[
+"Your sincerity and warmth have become an oasis for everyone, chirp. If you're a little mindful of your experience and promises today, you'll be wrapped in even greater peace.",
+"Right now, accepting advice honestly and relying on a trusted expert is the best lucky action, chirp. Don't worry alone. Trust the warm connections between people.",
+"Your wide heart and compassionate attitude are strengthening your bonds with those around you, chirp. Keeping the rules while snuggling up kindly with each other, a cozy, gentle time flows."
+],
+[
+"Wonderful allies who wrap you warmly, and bonds with friends whose hearts are connected, will grow deeper, chirp. Cozy, happy days of helping each other are promised.",
+"A problem you've been carrying heads toward a surprisingly peaceful, sincere resolution, chirp. Protected by warm cooperation and trust, days of true peace of mind arrive!",
+"At school, at work, and in relationships, you'll meet teachings and guidance that satisfy you deeply, chirp. Your doubts vanish and you walk the royal road boldly, sure of your happiness!"
+]
+]},
+{ title: "VI. The Lovers", messages: [
+[
+"A happy day when your heart flutters and you can make choices that make it skip, chirp! Choose whatever feels \"fun!\" and \"comfortable!\" and that's the right route. We'll dance with you!",
+"A day of wonderful synchronicity with a beloved partner, friend, or favorite hobby, chirp! If you honestly express what you love, warm happiness will pour in like an avalanche!",
+"When in doubt, choose by \"which one makes my heart flutter more,\" chirp. Today your intuition points right to the best route, as if an angel whispered it to you!"
+],
+[
+"You cherished what you love and connected hearts with wonderful people and things. Because you believed in that pure fluttering, the kind you exists now, chirp!",
+"You didn't force yourself to match others' opinions. You bravely chose what felt comfortable to your heart. That purity built the warm relationships you have now, chirp!",
+"You valued harmony with others and enjoyed pleasant conversations and wonderful collaborations. Your happy smile has delighted so many people!"
+],
+[
+"Surrounded by what you love, you're having many moments when your heart feels warm and fuzzy, chirp. Don't hold back your excitement. Enjoy it to the fullest and taste the happiness!",
+"Wonderful goodwill and empathy are overflowing around you now, chirp. If you smile and honestly say \"thank you!\" and lean on people, your relationships will get warmer and go even better!",
+"A wonderful chance to choose, chirp! Go in the direction that feels best, where your heart is excited and your body feels light. The snow fairies are cheering you on with trumpets!"
+],
+[
+"A wonderful encounter or choice that fills your heart with excitement is waiting, chirp! The path you should take starts to sparkle, and a happy road with nonstop smiles opens up.",
+"A new hobby that makes your heart burn and a precious partnership with a perfectly connected heart are born, chirp. A fun future full of flutters, where every day feels like a date, is coming!",
+"All the gears mesh beautifully, and whatever you choose ends in great happiness and harmony, chirp! Look forward to lovelike days where your smile shines even brighter!"
+]
+]},
+{ title: "VII. The Chariot", messages: [
+[
+"Full power, chirp! Your passionate engine is roaring. Dash straight toward your goal without hesitation. I'll run with you at the speed of the wind, chirp!",
+"The strong energy of \"I'll definitely get it done, chirp!\" gives your back big wings today. Blow rivals and troubles away with wind pressure and charge ahead!",
+"Even if there are a few mishaps, today you can push through them all with momentum! Trust your instinct and speed, floor the accelerator, and race to happiness, chirp!"
+],
+[
+"Even in hard times you didn't give up. You broke through walls with everything you had. That courage and unbreakable heart is truly amazing, chirp! A gold medal for you, hard worker.",
+"You shook off doubt and conflict and sped down the one road you chose. That unshakable drive and guts brought you all the way here, chirp!",
+"You controlled two different forces and difficult adjustments and brilliantly grasped victory. We send heartfelt cheers to your unyielding challenge spirit, chirp!"
+],
+[
+"You have tremendous horsepower to move things forward all at once right now, chirp! When you feel \"now!\" it's okay to go for it boldly without stepping on the brake.",
+"You're brimming with a breakthrough power that will amaze everyone, chirp! Don't brake your motivation. Keep dashing confidently toward your goals!",
+"Right now you're an unstoppable challenger, chirp! Even when obstacles show up, the momentum and courage to enjoy them is burning in your heart!"
+],
+[
+"You'll catch your target right on and seize the greatest victory, chirp! With speed, you'll arrive at your ideal place all at once. Get your celebration dance ready, chirp!",
+"I see a future where you win a great victory in a long competition or difficult mission, chirp. Your decisiveness and speed bring a super refreshing happy ending!",
+"A wonderful time is coming when you merge two paths into one without hesitation and make an explosive leap forward, chirp. Nothing stands in your way, and a bright future of pure acceleration toward the goal awaits!"
+]
+]},
+{ title: "VIII. Strength", messages: [
+[
+"Real strength is a gentle hug and patience, chirp. Even when worry or irritation rises, don't rush. Just wrap it up with a soft \"there, there.\" Your gentle love will melt it all away.",
+"You don't need to be angry or fight, chirp. Today you can handle everything with a huge, enchanting warmth. Your smile is the strongest magic!",
+"\"Waiting patiently\" is your greatest power today, chirp. Like gently stroking a wild beast, gently stroke your own restless heart. It will definitely work out.",
+],
+[
+"Even things that don't show results right away, you endured, accepted gently, and got through. I truly bow to your perseverance and the depth of your love, chirp. Well done!",
+"You controlled your emotions and patiently solved difficult relationships and hard work with love and endurance. I'll give you a hug for the grown-up strength no one sees, chirp!",
+"Even when your heart was about to break, you never abandoned your beliefs and kept accepting things gently and flexibly. That \"real strength\" is what makes you shine so beautifully now!"
+],
+[
+"Right now you have a flexible, strong heart that can let any storm pass, chirp. Don't try to overpower things. Face them with a warm smile and everything heads toward a solution.",
+"Hug your negative feelings and tell them \"that's proof you're trying hard,\" chirp. Your strong reason is in the perfect moment to turn any pinch into a gentle chance!",
+"There's not even a millimeter of need to rush, chirp. Your tenacity and deep compassion are slowly, surely guiding things to the best shape. Trust yourself and wait calmly."
+],
+[
+"What you believed in and kept working at finally bears fruit as great trust and results, chirp. You'll gently tame your difficulties and gain true peace of mind and confidence.",
+"A miracle happens, chirp: any high wall quietly turns into a lovely flower field thanks to your unbreakable heart and warm love. A wonderful future where you gain great confidence!",
+"A strong bond beyond words and great trust are completed between you and the people around you, chirp. Your efforts to watch over them gently without rushing return as a lifelong treasure, a moving future!"
+]
+]},
+{ title: "IX. The Hermit", messages: [
+[
+"Spend some time alone in a quiet place today, maybe with warm cocoa, chirp. Sorting out your heart will let you find a sparkling, lovely answer.",
+"Step away from the hustle, dim the room, and watch the candlelight, chirp. Your true wish is glowing gently within the quiet.",
+"Take a break from matching others and put your honest feelings first today, chirp. Time to think deeply and savor slowly gives your heart the best nourishment."
+],
+[
+"You didn't get swept up by outside opinions. You thought deeply with your own mind and searched for the truth that really matters. That deep thinking and straight gaze is so reassuring now, chirp!",
+"You weren't afraid of solitude and kept making a philosophical journey into your own inner self. Because you walked without lying to your own feelings, you have this steady core now, chirp!",
+"Through many experiences, you quietly stored deep wisdom and gentle kindness in your heart. Your quiet presence has saved the people around you without a single word."
+],
+[
+"Right now you're in a time of storing deep wisdom, chirp. You don't need to rush to match others. Light the lantern in your heart and slowly look at your true feelings.",
+"You don't need to care about other people's opinions, chirp. Now is the perfect time to pursue \"what's right for me.\" A quiet, intelligent, beautiful time wraps around you.",
+"If you're a little tired, try turning off your phone and enjoying the silence, chirp. Your inspiration will whisper the best hint to light your life ahead."
+],
+[
+"Like fog lifting, the right path becomes clear, chirp! The lantern in your heart gently lights not only your own feet but also the people around you who are troubled.",
+"The \"theme of your life\" and \"what you truly want to do\" you've been looking for will be clearly found, chirp. Doubt fades, and you can walk confidently, step by step, in the direction you should go!",
+"Your deep knowledge and experience will be recognized, and a chance comes to shine as a wonderful advisor or mentor, chirp. A warm future where everyone seeks your wisdom and thanks you!"
+]
+]},
+{ title: "X. Wheel of Fortune", messages: [
+[
+"A super lucky wave is coming, chirp! If you get a hunch like \"oh, this looks interesting!\" ride that wave without hesitation. We fairies will flap our wings and push you from behind, chirp!",
+"A miraculous day when the timing fits perfectly, chirp! Even if you usually hesitate, today just say \"here goes!\" and go with the flow. The wheel of fate starts turning fast!",
+"If an interesting change or a happy invitation drops in, it's a sign of luck, chirp! Don't mind being unprepared. Catch that chance with a smile!"
+],
+[
+"You flexibly got through many waves of change and timing to get here. You didn't miss your chances and held on hard. A round of applause for your strength, chirp!",
+"You deftly caught sudden good streaks and unexpected encounters and turned pinches into chances. Your sharp intuition and action were truly brilliant, chirp!",
+"You weren't afraid of fate's ups and downs and kept looking forward without stopping. Thanks to that positive brightness, you drew in a big wave of good luck!"
+],
+[
+"Right now the gears of your life click together and start turning fast, chirp! Interesting changes and happy news are coming, so receive them with a smile.",
+"Happy coincidences and synchronicities that make you think \"no way!\" keep happening to you today, chirp. The flow is carrying you to the right place, so relax and enjoy!",
+"The air and circumstances around you are moving all at once in a happy direction, chirp. If you answer \"yes!\" without hesitating and go forward, every door will open on its own!"
+],
+[
+"The best lucky timing is coming, chirp! Things that were stuck will start to move as if by magic, and a happy development far beyond your expectations awaits you!",
+"A big turning point in life is waiting where fate takes a sharp turn for the better, chirp! All the coincidences start cheering for you, and you can jump straight to a deeply satisfying result!",
+"A chance you've wanted forever, or a fated meeting with someone you've longed to see, suddenly arrives, chirp! Get excited for big news that makes you think \"I'm so glad I'm alive!\""
+]
+]},
+{ title: "XI. Justice", messages: [
+[
+"Your sincerity and sense of balance bring warm harmony to today, chirp. Don't lean to either side. Stay in the middle position where you feel \"most comfortable.\"",
+"It's an intelligent, clear day when you can see things with a flat eye without getting caught in the commotion, chirp. Your judgment today is right like a god's, so be confident!",
+"\"Be kind and sincere to yourself and others\" is today's lucky action, chirp. A clear, pleasant harmony arises where you respect each other's opinions."
+],
+[
+"You always listened to others and made fair, kind decisions so nobody got hurt. Thanks to you, everyone could live in peace, chirp. Thank you!",
+"Even when you were about to be swept along by emotions into a wrong path, you always kept to your conscience and what's right. That sincere, noble walk is a truly wonderful pride, chirp!",
+"You worked hard to control the balance of your relationships and your life and kept it beautiful. Your efforts to set things right created the peace you have now!"
+],
+[
+"Right now you have a very calm, unshakable core, chirp. If you judge by trusting \"what you think is right\" without being swept by emotions, all the balance falls beautifully into place.",
+"Your fair, honest attitude toward everyone is earning great respect from those around you, chirp. Hold your head high and boldly state the rules you believe in.",
+"Your mind is very clear and the swaying of emotions has settled, chirp. It's the best timing to make a clean, smart decision on the problem you were unsure about!"
+],
+[
+"Your sincere attitude so far is recognized, and everything is resolved in a clear and satisfying way, chirp! Your heart clears, and peaceful, comfortable, fair days arrive.",
+"The negotiation that dragged on, or the thing you couldn't decide, settles in a perfect 100-point way that satisfies both sides, chirp! Unfairness is resolved and a weight lifts from your shoulders!",
+"Fair recognition for your efforts and wonderful results will be delivered right to you, chirp. Days come when you feel deep relief and joy: \"my hard work really came back to me!\""
+]
+]},
+{ title: "XII. The Hanged Man", messages: [
+[
+"Don't force yourself to move right now. Hang upside down on a branch and look at the view, chirp! Just by slightly changing your viewpoint, you might make a big discovery: \"oh, this was fine all along!\"",
+"You're not \"stuck.\" It's a \"premium suspended time to think carefully,\" chirp! Stop flailing, let your strength go limp, and strangely a new path appears.",
+"You're enduring a little for someone else or for a big purpose, and that's truly beautiful, chirp. That devoted attitude will surely come back as a gift beyond recognition!"
+],
+[
+"Even in frustrating situations where things didn't go your way, you didn't sour. You waited for the timing and kept making an effort. That patience is a huge savings of energy, chirp!",
+"Even in times of trial when you thought \"why only me,\" you learned from them, changed your viewpoint 180 degrees, and got through. A big round of applause for your bottomless toughness, chirp!",
+"You quietly let go of your pride and ego and walked on accepting the flow of things. That grown-up ease and patience made your character many times deeper, chirp!"
+],
+[
+"Right now things may look like they've stopped, but it's actually an important recharging period to store power, chirp. Take it easy, relax, and keep your ideas warm.",
+"Even if everyone around is rushing, you don't need to hurry to jump into the flow. By watching closely and looking deeply at the situation, you'll clearly see a treasure route others can't.",
+"Your patience and small endurance now aren't wasted at all, chirp. In fact, it's a golden period you'll thank a hundred times later: \"because of that time, I'm who I am!\""
+],
+[
+"A huge breakthrough like fog lifting, \"oh, so that's what it was!\" is coming, chirp! Your efforts are rewarded, and a moving moment where everything starts anew is waiting.",
+"The time of endurance ends, and your patience brings a spectacular reversal, chirp! A future where everyone is convinced by wonderful results and you're surrounded by a storm of praise!",
+"A stubborn situation or someone's hardened heart gently melts, moved by your warm attitude, chirp. A wonderful new world of harmony full of love and gratitude opens!"
+]
+]},
+{ title: "XIII. Death", messages: [
+[
+"A day to shed your old shell and be reborn as a shiny new you, chirp! The end of something is a big chance for something even more wonderful to start. No need to be scared, chirp!",
+"\"The end\" is just another name for \"the start,\" chirp. If you cleanly cut off what didn't go well or a foggy relationship, your heart will feel surprisingly light and fluffy!",
+"Just as falling snow paints the town pure white, all your worries and your past are reset today, chirp! Let's start drawing a completely new story, just the way you like it, from here!"
+],
+[
+"You bravely let go of and got over sad farewells and things you were attached to. Even though it hurt, you did really well and walked forward, chirp. There, there.",
+"You let go of clinging and forced effort and found the courage to accept a big reset. Because you broke the old shell, new energy fills you now, chirp!",
+"No matter how hard it was, you made up your mind that \"there's no going back,\" cleaned up the past, and stood up again. That decisiveness and strong power to restart is truly amazing, chirp!"
+],
+[
+"Right now is a time of detox, a big cleaning of what you don't need, chirp. If you let go of attachments you feel \"I don't need this anymore,\" new happiness will pop right in.",
+"It's a time when the flow forcibly changes, but this is great kindness to help you fly higher, chirp! Quit old habits and breathe in new wind with a blank mind.",
+"Try letting go of what you've been clinging to, chirp. When your hands are free, you can firmly grab an even bigger present with both hands. Letting go is the greatest strength, chirp!"
+],
+[
+"A pure white new morning without a single cloud is coming, chirp! Old wounds disappear cleanly, and you can start an exciting new life with a surprisingly refreshed heart.",
+"A stagnant situation switches over as if by magic, and your view fills with dazzling light, chirp. A future where wonderful chances keep coming, made for the completely reborn you!",
+"For the you who has fully switched to the new flow, happiness your past self couldn't imagine arrives, chirp! Days of laughing from the heart, \"I'm so glad I changed my approach back then!\" are waiting!"
+]
+]},
+{ title: "XIV. Temperance", messages: [
+[
+"A day when body and mind settle smoothly and a gentle melody plays, chirp. Stop pushing yourself, have some warm soup, and heal yourself thoroughly.",
+"Don't do anything extreme. Gently keeping your own pace is today's magic, chirp. In work and private life, smooth, comfortable harmony will spread naturally like flowing water!",
+"A day you can blend different opinions and ideas gently and create new happiness, chirp. Your flexible heart wraps everyone's prickles in roundness!"
+],
+[
+"You skillfully blended others' opinions and feelings and always created a calm, gentle atmosphere. Because you kept the balance, everyone could live peacefully, chirp.",
+"You didn't rush or explode in emotion. You handled things with a calm, peaceful attitude. That high reason of yours prevented many pinches before they happened, chirp!",
+"You listened properly to the voices of your mind and body and walked on, gently tuning your health and life rhythm. The snow fairies sincerely praise you for caring for yourself!"
+],
+[
+"Right now you're in a very beautiful, calm circulation, chirp. Don't do anything extreme. Take in comfortable things little by little. I'll be right next to you, keeping you cozy, chirp.",
+"Your current state of keeping the \"just right\" amount without strain is wonderful, chirp. Because you can be yourself, relationships go smoothly and needless stress keeps disappearing.",
+"It's a time when you can combine different things well and discover a new kind of comfort, chirp. Your balance is the best, so whatever you do settles peacefully and satisfyingly."
+],
+[
+"Your mind, body, and relationships will all fit and harmonize perfectly, chirp. With no strain, you won't tire out, and smooth, comfortable days like flowing water will continue.",
+"You'll find an ideal environment or job that gently suits you without strain, chirp. Your days will be steady and calm, as if your heart were soaking in a warm bath!",
+"A prickly situation miraculously mellows, and a surprisingly clear harmony is completed, chirp. A future where a kind partnership and wonderful bonds grow, where you think of each other!"
+]
+]},
+{ title: "XV. The Devil", messages: [
+[
+"Take a little break from work and trying hard today, and spoil yourself to the fullest, chirp! Eat your favorite sweets or loll around in a cozy futon!",
+"It's a day you're allowed a little mischief and selfishness, chirp! Diets and chores call a full truce just for today! Let's give in to fun temptations with the snow fairies and a grin, chirp!",
+"No matter what anyone says, today you're a \"genius at being pampered,\" chirp! Enjoy what you like as much as you like, and pour lots of delicious energy into your heart!"
+],
+[
+"You tied yourself tightly with \"I must\" and \"I have to be perfect\" and tried too hard. Your seriousness is amazing, and you've endured and done your best, chirp. There, there.",
+"You struggled with habits you couldn't quit and cramped relationships you couldn't escape, yet you stubbornly lived on. I'll give you my biggest hug for that tremendous patience and strength, chirp!",
+"You didn't suppress your desires and true feelings, and you learned the strength of enjoying yourself by instinct at times. That human side and deep charm is what makes you attractive now, chirp!"
+],
+[
+"Right now you need a little \"cozy slacking,\" chirp! Be honest about your desires and enjoy fun things to the fullest. It'd be a waste not to stretch your wings and play once in a while, chirp!",
+"Even if there's something you can't quit even though you know, don't scold yourself today, chirp. It's a gentle sign that your heart is working hard to find balance right now.",
+"Take a good look at the chains that bind you, chirp. Actually, you've had the key all along. Remember that you can escape any time, and relax your shoulders a bit."
+],
+[
+"The chains of \"assumptions\" and \"duty\" that bound you pop off, and your heart becomes surprisingly light, chirp. You gain the freedom to be more selfish and enjoy being yourself!",
+"A happy escape awaits you, a clean graduation from painful ties and bad habits, chirp! As a light bird tied to nothing, you can fly refreshingly across the big sky!",
+"Your charm explodes and a little-devil popularity season arrives that makes everyone melt, chirp! You'll enjoy life energetically, surrounded by \"fun! love you!\""
+]
+]},
+{ title: "XVI. The Tower", messages: [
+[
+"A shocking detox day when old walls and assumptions crack open with a bang and the view ahead suddenly brightens! You might be surprised at first, but this is the foundation for creating a wonderful new world. The snow fairies are holding your hand tight, so you'll be absolutely fine.",
+"Even if there's a sudden change of plans or a mishap, it's a happy meddling from above saying \"there's a better way, chirp!\" Enjoy this super lucky chance wearing the face of a pinch!",
+"It's a day when the rigid stubbornness and the taut thread of tension you kept up by force snap pleasantly, chirp. If it breaks, we can just rebuild a sturdier, stylish home together, chirp!"
+],
+[
+"You got through sudden mishaps and the shock of things you built collapsing. It must have been really scary. But you stood up, and you're the strongest, chirp!",
+"You went through unexpected change, where common sense came crumbling down. It was hard, but you didn't cling to the old and lived forward, and you're a hero, chirp!",
+"You passed through a shocking storm like a great lightning strike and survived beautifully to get here. All the snow fairies are applauding your overwhelming survival power and inner strength, chirp!"
+],
+[
+"Right now old assumptions and unnecessary rules are pleasantly breaking down, chirp. On the ground after the collapse, you can rebuild a sturdier, warmer foundation for your ideal!",
+"There may be a \"no way!\" kind of development, but it's a great release so you can jump to the next level, chirp! The old cage is broken, so spread your wings fully and take off!",
+"This is a chance to be freed from a relationship or job you were forcing yourself to keep, chirp. The collapse is a staging by above to present you with wonderful new freedom!"
+],
+[
+"A great liberation awaits where your view suddenly brightens and your worries vanish in an instant, chirp! Dash down a fresh, obstacle-free happy road in one go!",
+"The cramped world that had confined you collapses completely, and you can escape to a surprisingly wide, free new land, chirp! From now on, you can enjoy the big sky by your own rules!",
+"Old thinking crumbles and a wonderful flash of inspiration or breakthrough strikes you, chirp! The situation turns around in an instant, and a shocking happy comeback victory arrives!"
+]
+]},
+{ title: "XVII. The Star", messages: [
+[
+"A sparkling star of hope is lit in your future! The dream and wish you want to come true is not impossible at all. The snow fairies are gathering twinkling stardust from the night sky and lighting your way beautifully.",
+"Try whispering your pure wish, \"I hope it turns out this way,\" to the stars, chirp. Today you're connected with the universe, so your sparkling feelings will surely be heard!",
+"Today is the best sparkling day when your inspiration is sharp, chirp! If you keep looking straight, believing in the ideal future reflected in your clear eyes, miracles will naturally be drawn to you!"
+],
+[
+"Even in the dark, you never gave up hope and kept looking up at the stars as you went. Your pure prayer and power of belief now wrap around you as a beautiful light, chirp.",
+"Even in the hardest days, you protected the \"lamp of hope\" in your heart and never let it go out. The stars are deeply moved by your earnest heart of belief, chirp!",
+"You held high ideals, believed in your talent and inner shine, and kept steadily picturing a beautiful future. That sparkling dream energy is protecting you now!"
+],
+[
+"Right now your heart is filled with beautiful light of hope, chirp. Your dream is not out of reach. Believe in yourself and go forward with a sparkling feeling.",
+"Your pure personality and talent are charming everyone around you like the brightest star in the night sky, chirp. Don't be modest. If you proudly show that beauty, everyone will be happy!",
+"Very pure, beautiful inspiration that washes the heart is coming down to you, chirp. Turn all your worries into stardust and return them to the night sky, and breathe in only exciting ideals!"
+],
+[
+"The dream and goal you wished for will really take shape and appear before you, chirp! Your days begin to shine as if wrapped in sparkling magic, and wonderful days full of hope begin.",
+"Your own wonderful talent and charm will be discovered by the world, and a future awaits where you shine as an object of admiration, chirp! You'll be invited to the stage of your dreams, as if into the spotlight!",
+"The darkness completely ends, and the brightest star of hope that guides you appears overhead with a flash, chirp. Doubt and anxiety vanish entirely, and supreme days come where you can just be excited about your future!"
+]
+]},
+{ title: "XVIII. The Moon", messages: [
+[
+"Even if you feel a bit uneasy because you can't see ahead, it's proof that your imagination is rich. The fog will surely clear someday and the warm sun will come out. The snow fairy is quietly protecting you in the moonlight, so sleep slowly and rest easy.",
+"When you think \"I don't know what's right,\" you don't need to make it black and white, chirp. Just enjoy the dreamy night swaying in the moonlight with \"some days are like that, chirp.\"",
+"Today is a mysterious day when your sensitivity and inspiration deepen, chirp. In your dreams, your true heart will tell you a very gentle message!"
+],
+[
+"You walked groping through the fog of invisible worries and nagging troubles, doing your best. You must have been so anxious. I'll give you a big squeeze for continuing on, chirp.",
+"Even in uncertain times, you trusted your intuition and quietly faced your fears. I sincerely applaud your unshakable spirit and deep kindness, chirp!",
+"You weren't fooled by lies or evasions. You sensitively caught the nagging unease in your heart and carefully avoided danger. That delicate instinct for self-defense is truly wonderful, chirp!"
+],
+[
+"Your heart may sway easily right now, but that's because it's delicate and kind, chirp. Don't try to make everything black and white. Spend time relaxing under the moonlight and you'll be fine.",
+"Don't spend energy on anxious fantasies. Today, enjoy strange dreams and art made of rich imagination. It's a reward time when your creative sensibility is deepening.",
+"No matter how long the fog, the snow fairy is quietly protecting you in the moonlight, so you'll be fine. Quietly trust the \"light of truth\" in your heart and get through the night, chirp."
+],
+[
+"The fog of worry clears away, and a bright morning arrives where the path you should take is clear, chirp! The day you can smile and say \"oh, I didn't need to worry, chirp!\" is just ahead.",
+"Whatever deceived you and the problems that were hidden are cleanly exposed, and a satisfying truth appears, chirp. Lies disappear, and wonderful days come when you can smile with peace of mind!",
+"The night of worry and doubt fully ends, and a development arrives with the dazzling sun that makes you sure \"this is it!\" chirp. A wonderfully comfortable future where your heart is 100% at ease!"
+]
+]},
+{ title: "XIX. The Sun", messages: [
+[
+"A super great-luck day, no complaints! A happy, sparkling day when energy and joy fill your whole body! Your smile is warming the people around you too. Let's enjoy today to the fullest with the snow fairies!",
+"Today you are the sun itself, chirp! Everything works out, and your innocent, happy voice blows away the gloomy air around you in an instant! Get ready to play, chirp!",
+"A highly energetic day promised to bring big success and big satisfaction, chirp! Enjoy it fully \"like when you were a kid,\" and if you honestly hop onto whatever excites you, happiness will grow even more!"
+],
+[
+"With your bright smile and straight heart, you've warmed the people around you so much. Thank you for always giving us such warm, sunlike energy, chirp!",
+"Even in any hardship or darkness, you always found a light of bright hope and moved forward cheerfully, lighting those around you. The fairies highly praise your wonderful vitality, chirp!",
+"You cherished your innocent curiosity and pure smile and kept challenging yourself, believing straight in your own potential. That purity you protected is your brilliant charm now, chirp!"
+],
+[
+"Without holding back what you want, you're sparkling now, full of confidence and life force, chirp! You have nothing to fear. Be innocently yourself and enjoy what you want to do 100%!",
+"Bright light like the sun is shining on you as the star, chirp. Let's dry your worries in the sun and make them disappear! With the warm light you give off, make the whole world happy!",
+"A day of great satisfaction, great success, and full-score laughter, chirp! Toss away all holding back. Today you can romp around under the sun. You have the right to be loved unconditionally and to shine!"
+],
+[
+"Bright light shines on your path forever, chirp. A warm, happy future is coming where everything succeeds hugely and you can celebrate with the people around you!",
+"Your efforts so far bloom into a perfect big flower, chirp. Stepping into the spotlight, you'll reach the peak where you shine the most, so look forward to it with total confidence!",
+"The greatest blessings, bright relationships, and success that fill your heart with warmth are promised. The snow fairies shower flower petals and celebrate your brilliant future with a big chorus, chirp!"
+]
+]},
+{ title: "XX. Judgement", messages: [
+[
+"A time of revival when what you were about to give up on and your past efforts are rewarded wonderfully! You'll be truly proud of yourself: \"I was right to choose this after all!\" The snow fairies blow celebration trumpets and warmly welcome your fresh start.",
+"The timing of a miraculous comeback has arrived! The thing you thought \"maybe it's impossible\" revives with a burst of surprisingly good news, chirp. I'm so glad you didn't give up!",
+"A moment comes when your heart suddenly wakes up to \"this is it!\" chirp. All the puzzle pieces connect, and it's a moving day when you can spread your wings strongly again with new resolve!"
+],
+[
+"Even the thing you once thought was hopeless, you kept warming carefully in your heart. That strong love and thought of not giving up is about to call up a wonderful miracle, chirp!",
+"You turned past failures and frustrations into fertilizer and stood up with wonderful growth and deep mental strength. We're deeply moved by your unyielding \"comeback spirit,\" chirp!",
+"You didn't forget an important promise or your dormant talent, and you kept believing the chance would come. Your perseverance is now blowing a wonderful trumpet!"
+],
+[
+"The trumpet of your big comeback is sounding now, chirp! The chances and energy you thought were lost burst back to life. Hold your head high and receive this happy revival.",
+"A moment is coming when you can sincerely forgive and affirm your own life, saying \"I'm fine as I am!\" chirp. Like an alarm clock ringing, your soul notices the path it truly should take!",
+"Something you loved long ago, or a bond that was cut off, comes back at the perfect moment to grasp your hand tightly. It's time to enjoy reunions and new challenges to the fullest, chirp!"
+],
+[
+"A moving happy ending and a new start are waiting, where you can cheer from the bottom of your heart, \"I'm so glad I kept going, chirp!\" Wait for happy news that feels like a miracle!",
+"A grand finale arrives where long-standing worries and efforts that went unrewarded bloom in an instant in the best way, chirp! A future where blessing angels call your name and welcome you with huge applause!",
+"Life breathes back into the dream you gave up on, and this time you enter the road to great success in perfect shape, chirp. A wonderful \"real start of you\" that makes your heart tremble with emotion is waiting!"
+]
+]},
+{ title: "XXI. The World", messages: [
+[
+"Everything is in perfect harmony, the entrance to the happiest goal and a beautiful world. Be proud of who you've been, and keep smiling. The snow fairies are making a lovely celebration wreath of flowers and dancing to celebrate your happiness from the heart. Have the best day!",
+"Congratulations, chirp! Today is the happy-ending day of your story, chirp! All the pieces snap into place, and unsurpassed satisfaction and peace wrap around you. You're the best, chirp!",
+"You don't have to hold anything back, and nothing is missing, chirp! Just enjoy the happiness you have now with a smile and spread your happy aura around the world. Everything is perfectly in place!"
+],
+[
+"You've experienced all kinds of joy and sadness and completed one beautiful story. The road you've walked is truly perfect, beautiful, and precious, chirp.",
+"You've beautifully overcome difficulties and walls one by one and built a wonderful world of your own. Your patience and rich love are a miracle of the whole universe, chirp! Good work, chirp!",
+"You didn't give up halfway, protected your world until the end, and reached a happy goal. For your strength in doing what you said you'd do, I'm giving you a celebration flower crown!"
+],
+[
+"Right now you're in the best state, filled with everything, chirp. Nothing is lacking, so savor your present happiness fully and spread your happy aura with a big smile!",
+"Every puzzle piece is complete, and a beautiful circle of peace has formed around you, chirp. Feel truly relieved and enjoy your ideal paradise as if strolling through it at leisure!",
+"Where you are has become the best power spot right now, chirp. Your smile calls perfect harmony and wraps the people around you in the greatest happiness!"
+],
+[
+"Your \"perfect paradise\" spreads out before your eyes, chirp! Your worries clear completely, and a best future is completed, wrapped in unsurpassed happiness and peace where every puzzle piece snaps into place.",
+"Every theme of your life reaches a wonderful completion, and the curtain rises on a brilliant next great adventure, chirp. A deeply satisfying future is promised where you gain lifelong happiness and immense peace!",
+"A \"golden age\" arrives where you're loved wherever you go, succeed perfectly at everything you do, and are filled with the greatest joy, chirp! All the snow fairies will celebrate your brilliant success with a hug!"
+]
+]}
+  ];
+
+  // ==========================================
+  // 【言語切り替え / language switch】
+  // ==========================================
+  const I18N = {
+    ja: {
+      docTitle: "雪の妖精タロット",
+      h1: "❄️ 雪の妖精タロット 🕊️",
+      sub: "~ 100%全肯定の毎日 ~",
+      modeOne: "今日の1枚引き",
+      modeThree: "過去・現在・未来の3枚引き",
+      instruction: "タップしてカードをひいてね",
+      positions: ["過去", "現在", "未来"],
+      positionsLong: ["過去（これまでの歩み）", "現在（今のあなたへ）", "未来（これからのハッピー）"],
+      reset: "もう一度占う",
+      ctaTitle: "このカードを、もう少し深く知りたい方へ",
+      ctaLink: "📖 有料PDFガイドを見る",
+      ctaNote: "BOOTHの商品ページが開きます",
+      loading: "画像の読み込み中ちゅん…✨",
+      posSub: (p) => p + "のあなたへ✨",
+      todayMsg: "今日のあなたへのメッセージ ❄️✨",
+      todayBadge: "今日の一枚",
+      allDone: "過去、現在、未来。すべて全肯定だよ！❄️✨",
+      more: "残りのカードもめくってみてね！"
+    },
+    en: {
+      docTitle: "Snow Fairy Tarot",
+      h1: "❄️ Snow Fairy Tarot 🕊️",
+      sub: "~ 100% Affirming, Every Day ~",
+      modeOne: "Card of the Day",
+      modeThree: "Past / Present / Future (3 cards)",
+      instruction: "Tap a card to draw",
+      positions: ["Past", "Present", "Future"],
+      positionsLong: ["Past (your journey so far)", "Present (for you now)", "Future (happiness ahead)"],
+      reset: "Draw again",
+      ctaTitle: "Want to know this card a little more deeply?",
+      ctaLink: "📖 See the paid PDF guide",
+      ctaNote: "Opens the BOOTH product page (Japanese)",
+      loading: "Loading the image, chirp...✨",
+      posSub: (p) => "A message for your " + p.toLowerCase() + "✨",
+      todayMsg: "Your message for today ❄️✨",
+      todayBadge: "Card of the Day",
+      allDone: "Past, present, and future. All of it is affirmed! ❄️✨",
+      more: "Flip the remaining cards too!"
+    }
+  };
+
+  let currentLang = 'ja';
+
+  function t(key) { return I18N[currentLang][key]; }
+
+  function cardIndex(cardData) { return cards.indexOf(cardData); }
+  function cardTitle(cardData) {
+    return currentLang === 'en' ? cardsEn[cardIndex(cardData)].title : cardData.title;
+  }
+  function cardMsgs(cardData) {
+    return currentLang === 'en' ? cardsEn[cardIndex(cardData)].messages : cardData.messages;
+  }
+
+  function detectLang() {
+    try {
+      const q = new URLSearchParams(location.search).get('lang');
+      if (q === 'en' || q === 'ja') return q;
+    } catch (e) {}
+    try {
+      const saved = localStorage.getItem('tarotLang');
+      if (saved === 'en' || saved === 'ja') return saved;
+    } catch (e) {}
+    const nav = (navigator.language || 'ja').toLowerCase();
+    return nav.indexOf('ja') === 0 ? 'ja' : 'en';
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    try { localStorage.setItem('tarotLang', lang); } catch (e) {}
+    document.documentElement.lang = lang;
+    document.title = t('docTitle');
+    document.getElementById('ttl').innerText = t('h1');
+    document.getElementById('sub').innerText = t('sub');
+    document.getElementById('btnModeOne').innerText = t('modeOne');
+    document.getElementById('btnModeThree').innerText = t('modeThree');
+    for (let i = 0; i < 3; i++) document.getElementById('lbl' + i).innerText = t('positions')[i];
+    document.getElementById('resetBtn').innerText = t('reset');
+    document.getElementById('ctaTitle').innerText = t('ctaTitle');
+    document.getElementById('ctaLink').innerText = t('ctaLink');
+    document.getElementById('ctaNote').innerText = t('ctaNote');
+    document.getElementById('langJa').classList.toggle('active', lang === 'ja');
+    document.getElementById('langEn').classList.toggle('active', lang === 'en');
+    resetAll();
+  }
+
+
   let currentMode = 'one';
   let isOneFlipped = false;
   let threeCardsState = [
@@ -850,6 +1437,7 @@
   window.addEventListener('DOMContentLoaded', () => {
     setupFrontBackFaces();
     prepareCards();
+    setLang(detectLang());
   });
 
   function setupFrontBackFaces() {
@@ -891,13 +1479,13 @@
     const fallbackHTML = `
       <div class="fallback-card-content" id="oneCardFallback">
         <div class="fallback-icon">❄️</div>
-        <div class="fallback-title">${cardData.title}</div>
-        <div class="fallback-subtext">画像の読み込み中ちゅん…✨</div>
+        <div class="fallback-title">${cardTitle(cardData)}</div>
+        <div class="fallback-subtext">${t('loading')}</div>
       </div>
     `;
     
     const imgHTML = `
-      <img src="${cardData.image}" alt="${cardData.title}" 
+      <img src="${cardData.image}" alt="${cardTitle(cardData)}" 
            onerror="handleImageError(this, 'oneCardFallback')" 
            onload="handleImageLoad(this, 'oneCardFallback')"
            id="oneCardImg"
@@ -906,17 +1494,17 @@
     
     document.getElementById('oneCardResult').innerHTML = fallbackHTML + imgHTML;
     document.getElementById('oneCard').classList.add('flipped');
-    document.getElementById('instruction').innerText = "今日のあなたへのメッセージ ❄️✨";
+    document.getElementById('instruction').innerText = t('todayMsg');
     
     const subIdx = Math.floor(Math.random() * 3);
-    const selectedMessage = cardData.messages[0][subIdx];
+    const selectedMessage = cardMsgs(cardData)[0][subIdx];
     
     setTimeout(() => {
       const container = document.getElementById('resultItemsContainer');
       container.innerHTML = `
         <div class="result-item">
-          <div class="res-badge">今日の一枚</div>
-          <h2 class="res-title">${cardData.title}</h2>
+          <div class="res-badge">${t('todayBadge')}</div>
+          <h2 class="res-title">${cardTitle(cardData)}</h2>
           <p class="res-message">${selectedMessage}</p>
         </div>
       `;
@@ -935,20 +1523,19 @@
     
     const state = threeCardsState[index];
     const cardData = state.card;
-    const positionLabels = ["過去", "現在", "未来"];
-    const positionLabel = positionLabels[index];
+    const positionLabel = t('positions')[index];
     
     // 画像ロード中のシンプルな可愛い仮テキスト
     const fallbackHTML = `
       <div class="fallback-card-content" id="threeCardFallback_${index}">
         <div class="fallback-icon">❄️</div>
-        <div class="fallback-title">${cardData.title}</div>
-        <div class="fallback-subtext">${positionLabel}のあなたへ✨</div>
+        <div class="fallback-title">${cardTitle(cardData)}</div>
+        <div class="fallback-subtext">${t('posSub')(positionLabel)}</div>
       </div>
     `;
     
     const imgHTML = `
-      <img src="${cardData.image}" alt="${cardData.title}" 
+      <img src="${cardData.image}" alt="${cardTitle(cardData)}" 
            onerror="handleImageError(this, 'threeCardFallback_${index}')" 
            onload="handleImageLoad(this, 'threeCardFallback_${index}')"
            id="threeCardImg_${index}"
@@ -964,7 +1551,7 @@
   function renderThreeCardsResult() {
     const container = document.getElementById('resultItemsContainer');
     let htmlContent = '';
-    const positionLabels = ["過去（これまでの歩み）", "現在（今のあなたへ）", "未来（これからのハッピー）"];
+    const positionLabels = t('positionsLong');
     
     let flippedCount = 0;
     
@@ -976,13 +1563,13 @@
         
         if (!threeCardsState[i].selectedMessageText) {
           const subIdx = Math.floor(Math.random() * 3);
-          threeCardsState[i].selectedMessageText = cardData.messages[msgIndex][subIdx];
+          threeCardsState[i].selectedMessageText = cardMsgs(cardData)[msgIndex][subIdx];
         }
         
         htmlContent += `
           <div class="result-item">
             <div class="res-badge" style="background-color: #8caec6;">${positionLabels[i]}</div>
-            <h2 class="res-title">${cardData.title}</h2>
+            <h2 class="res-title">${cardTitle(cardData)}</h2>
             <p class="res-message">${threeCardsState[i].selectedMessageText}</p>
           </div>
         `;
@@ -995,11 +1582,11 @@
       resultBox.classList.add('show');
       
       if (flippedCount === 3) {
-        document.getElementById('instruction').innerText = "過去、現在、未来。すべて全肯定だよ！❄️✨";
+        document.getElementById('instruction').innerText = t('allDone');
         document.getElementById('resetBtn').style.display = 'inline-block';
         document.getElementById('pdfCtaMini').style.display = 'block';
       } else {
-        document.getElementById('instruction').innerText = "残りのカードもめくってみてね！";
+        document.getElementById('instruction').innerText = t('more');
       }
       
       resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1034,7 +1621,7 @@
       { flipped: false, card: null, selectedMessageText: null }
     ];
     
-    document.getElementById('instruction').innerText = "タップしてカードをひいてね";
+    document.getElementById('instruction').innerText = t('instruction');
     document.getElementById('resultBox').classList.remove('show');
     document.getElementById('resetBtn').style.display = 'none';
     document.getElementById('pdfCtaMini').style.display = 'none';
